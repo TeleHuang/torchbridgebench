@@ -20,7 +20,7 @@ class TinyResNet(nn.Module):
         return x
 
 def test_tiny_resnet(adapter):
-    model = TinyResNet()
-    x = torch.randn(2, 3, 32, 32)
+    model = TinyResNet().to(adapter.device)
+    x = torch.randn(2, 3, 32, 32, device=adapter.device)
     out = adapter.run_model(model, x)
     return out.shape == (2, 10)

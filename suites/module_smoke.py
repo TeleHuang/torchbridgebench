@@ -20,13 +20,13 @@ class SimpleConv(nn.Module):
         return self.conv(x)
 
 def test_linear_module(adapter):
-    module = SimpleLinear()
-    x = torch.randn(2, 10)
+    module = SimpleLinear().to(adapter.device)
+    x = torch.randn(2, 10, device=adapter.device)
     out = adapter.run_module(module, x)
     return out.shape == (2, 5)
 
 def test_conv_module(adapter):
-    module = SimpleConv()
-    x = torch.randn(1, 3, 32, 32)
+    module = SimpleConv().to(adapter.device)
+    x = torch.randn(1, 3, 32, 32, device=adapter.device)
     out = adapter.run_module(module, x)
     return out.shape == (1, 16, 30, 30)
