@@ -1,6 +1,8 @@
 import os
 import subprocess
 import json
+import shutil
+from datetime import datetime
 
 class EnvManagerTool:
     """Tool for managing Python Virtual Environments safely."""
@@ -12,6 +14,35 @@ class EnvManagerTool:
 
         if not os.path.exists(self.pip_path):
             raise FileNotFoundError(f"Virtual environment pip not found at {self.pip_path}")
+            
+    def create_snapshot(self, snapshot_dir="/root/autodl-tmp/torchbridgebench/env_snapshots"):
+        """Saves current pip freeze state to a requirements.txt file."""
+        if not os.path.exists(snapshot_dir):
+            os.makedirs(snapshot_dir)
+            
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        env_name = os.path.basename(self.venv_path.rstrip('/'))
+        snapshot_file = os.path.join(snapshot_dir, f"{env_name}_{timestamp}.txt")
+        
+        result = subprocess.run([self.pip_path, "freeze"], capture_output=True, text=True)
+        if result.returncode == 0:
+            with open(snapshot_file, 'w') as f:
+                f.write(result.stdout)
+            return {"success": True, "snapshot_file": snapshot_file}
+        return {"success": False, "error": result.stderr}
+
+    def restore_snapshot(self, snapshot_file):
+        """Restores environment from a requirements.txt snapshot."""
+        if not os.path.exists(snapshot_file):
+            return {"success": False, "error": "Snapshot file not found."}
+            
+        cmd = [self.pip_path, "install", "-r", snapshot_file]
+        result = subprocess.run(cmd, capture_output=True, text=True)
+        return {
+            "success": result.returncode == 0,
+            "stdout": result.stdout,
+            "stderr": result.stderr
+        }
 
     def list_packages(self):
         """Returns a list of installed packages and their versions."""
