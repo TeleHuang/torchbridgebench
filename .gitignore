@@ -1,3 +1,4 @@
 report.json
 __pycache__/
 *.pyc
+benchmark_report.md
