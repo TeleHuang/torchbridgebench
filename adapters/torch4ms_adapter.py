@@ -6,11 +6,10 @@ class Torch4MSAdapter(BaseAdapter):
         return "torch4ms"
 
     def setup(self):
-        try:
-            import torch4ms
-            # Add specific torch4ms initialization if necessary
-        except ImportError:
-            print("Warning: torch4ms not found.")
+        import torch4ms
+        self.env = torch4ms.default_env()
+        self.env.__enter__()
 
     def teardown(self):
-        pass
+        if hasattr(self, 'env') and self.env:
+            self.env.__exit__(None, None, None)

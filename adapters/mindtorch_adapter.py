@@ -6,10 +6,9 @@ class MindTorchAdapter(BaseAdapter):
         return "mindtorch"
 
     def setup(self):
-        try:
-            import mindtorch
-        except ImportError:
-            print("Warning: mindtorch not found.")
+        import mindtorch
+        import sys
+        sys.modules['torch'] = mindtorch
 
     def teardown(self):
         pass

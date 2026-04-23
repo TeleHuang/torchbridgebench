@@ -5,13 +5,14 @@ class TorchNPUAdapter(BaseAdapter):
     def name(self):
         return "torch-npu"
 
+    @property
+    def device(self):
+        return "npu:0"
+
     def setup(self):
-        try:
-            import torch
-            import torch_npu
-            # Device will be handled by the workload if this adapter is chosen
-        except ImportError:
-            print("Warning: torch_npu not found.")
+        import torch
+        import torch_npu
+        torch.npu.set_device(0)
 
     def teardown(self):
         pass

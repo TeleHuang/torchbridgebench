@@ -6,6 +6,11 @@ class BaseAdapter(ABC):
     def name(self):
         pass
 
+    @property
+    def device(self):
+        """The device string to use for tensor creation in workloads."""
+        return "cpu"
+
     @abstractmethod
     def setup(self):
         """Setup the backend environment, apply patches if necessary."""

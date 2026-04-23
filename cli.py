@@ -28,7 +28,7 @@ def run_tests_in_suite(adapter, suite_module):
             try:
                 # Mock result for smoke test execution
                 # A real implementation would capture execution time, output, and correctness
-                success = obj(adapter)
+                success = bool(obj(adapter))
                 results.append(TestCaseResult(
                     test_name=name,
                     suite_name=suite_name,
@@ -59,14 +59,40 @@ def main():
 
     print(f"Starting Benchmark for backend: {args.backend}")
     adapter = get_adapter(args.backend)
-    adapter.setup()
+    
+    setup_failed = False
+    setup_error = None
+    try:
+        adapter.setup()
+    except Exception as e:
+        setup_failed = True
+        setup_error = str(e)
+        print(f"Adapter setup failed: {e}")
 
     all_results = []
     suites = load_suites()
-    for suite in suites:
-        all_results.extend(run_tests_in_suite(adapter, suite))
-
-    adapter.teardown()
+    
+    if setup_failed:
+        for suite in suites:
+            layer = getattr(suite, "LAYER", "unknown")
+            suite_name = suite.__name__.split(".")[-1]
+            for name, obj in inspect.getmembers(suite):
+                if inspect.isfunction(obj) and name.startswith("test_"):
+                    all_results.append(TestCaseResult(
+                        test_name=name,
+                        suite_name=suite_name,
+                        layer=layer,
+                        compatibility=False,
+                        correctness=False,
+                        error_message=f"Setup failed: {setup_error}"
+                    ))
+    else:
+        for suite in suites:
+            all_results.extend(run_tests_in_suite(adapter, suite))
+        try:
+            adapter.teardown()
+        except Exception as e:
+            print(f"Adapter teardown failed: {e}")
 
     # Collect Environment Info
     env_info = {

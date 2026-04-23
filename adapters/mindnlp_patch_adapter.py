@@ -6,11 +6,9 @@ class MindNLPPatchAdapter(BaseAdapter):
         return "mindnlp_patch"
 
     def setup(self):
-        try:
-            # Usually requires some patch activation
-            pass
-        except Exception as e:
-            print(f"Warning: mindnlp patch setup failed: {e}")
+        import mindnlp
+        from mindnlp.patch import apply_all_patches
+        apply_all_patches()
 
     def teardown(self):
         pass
