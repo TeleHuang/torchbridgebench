@@ -1,0 +1,300 @@
+{
+  "backend": "torch4ms",
+  "timestamp": "2026-04-23T12:49:42.882291",
+  "environment": {
+    "python": "3.10.19",
+    "os": "Linux"
+  },
+  "results": [
+    {
+      "test_name": "test_tiny_lstm",
+      "suite_name": "model_smoke",
+      "layer": "model",
+      "compatibility": false,
+      "correctness": false,
+      "performance_ms": null,
+      "error_message": "Can't call numpy() on Tensor that requires grad. Use tensor.detach().numpy() instead.",
+      "usability_score": null
+    },
+    {
+      "test_name": "test_tiny_mlp",
+      "suite_name": "model_smoke",
+      "layer": "model",
+      "compatibility": true,
+      "correctness": true,
+      "performance_ms": 0.0,
+      "error_message": null,
+      "usability_score": null
+    },
+    {
+      "test_name": "test_tiny_resnet",
+      "suite_name": "model_smoke",
+      "layer": "model",
+      "compatibility": false,
+      "correctness": false,
+      "performance_ms": null,
+      "error_message": "module 'mindspore.ops' has no attribute 'MaxPool2D'",
+      "usability_score": null
+    },
+    {
+      "test_name": "test_avgpool2d_module",
+      "suite_name": "module_smoke",
+      "layer": "module",
+      "compatibility": true,
+      "correctness": true,
+      "performance_ms": 0.0,
+      "error_message": null,
+      "usability_score": null
+    },
+    {
+      "test_name": "test_batchnorm2d_module",
+      "suite_name": "module_smoke",
+      "layer": "module",
+      "compatibility": true,
+      "correctness": true,
+      "performance_ms": 0.0,
+      "error_message": null,
+      "usability_score": null
+    },
+    {
+      "test_name": "test_conv_module",
+      "suite_name": "module_smoke",
+      "layer": "module",
+      "compatibility": true,
+      "correctness": true,
+      "performance_ms": 0.0,
+      "error_message": null,
+      "usability_score": null
+    },
+    {
+      "test_name": "test_dropout_module",
+      "suite_name": "module_smoke",
+      "layer": "module",
+      "compatibility": true,
+      "correctness": true,
+      "performance_ms": 0.0,
+      "error_message": null,
+      "usability_score": null
+    },
+    {
+      "test_name": "test_embedding_module",
+      "suite_name": "module_smoke",
+      "layer": "module",
+      "compatibility": true,
+      "correctness": true,
+      "performance_ms": 0.0,
+      "error_message": null,
+      "usability_score": null
+    },
+    {
+      "test_name": "test_layernorm_module",
+      "suite_name": "module_smoke",
+      "layer": "module",
+      "compatibility": true,
+      "correctness": true,
+      "performance_ms": 0.0,
+      "error_message": null,
+      "usability_score": null
+    },
+    {
+      "test_name": "test_linear_module",
+      "suite_name": "module_smoke",
+      "layer": "module",
+      "compatibility": true,
+      "correctness": true,
+      "performance_ms": 0.0,
+      "error_message": null,
+      "usability_score": null
+    },
+    {
+      "test_name": "test_maxpool2d_module",
+      "suite_name": "module_smoke",
+      "layer": "module",
+      "compatibility": false,
+      "correctness": false,
+      "performance_ms": null,
+      "error_message": "module 'mindspore.ops' has no attribute 'MaxPool2D'",
+      "usability_score": null
+    },
+    {
+      "test_name": "test_add",
+      "suite_name": "operator_smoke",
+      "layer": "operator",
+      "compatibility": true,
+      "correctness": true,
+      "performance_ms": 0.0,
+      "error_message": null,
+      "usability_score": null
+    },
+    {
+      "test_name": "test_cat",
+      "suite_name": "operator_smoke",
+      "layer": "operator",
+      "compatibility": true,
+      "correctness": true,
+      "performance_ms": 0.0,
+      "error_message": null,
+      "usability_score": null
+    },
+    {
+      "test_name": "test_div",
+      "suite_name": "operator_smoke",
+      "layer": "operator",
+      "compatibility": true,
+      "correctness": true,
+      "performance_ms": 0.0,
+      "error_message": null,
+      "usability_score": null
+    },
+    {
+      "test_name": "test_matmul",
+      "suite_name": "operator_smoke",
+      "layer": "operator",
+      "compatibility": true,
+      "correctness": true,
+      "performance_ms": 0.0,
+      "error_message": null,
+      "usability_score": null
+    },
+    {
+      "test_name": "test_max",
+      "suite_name": "operator_smoke",
+      "layer": "operator",
+      "compatibility": false,
+      "correctness": false,
+      "performance_ms": null,
+      "error_message": "Failed calling Abs with \"Abs()(input=float)\".\nThe valid calling should be: \n\"Abs()(input=<Tensor>)\".\n\n----------------------------------------------------\n- C++ Call Stack: (For framework developers)\n----------------------------------------------------\nmindspore/ccsrc/pynative/pynative_utils.cc:1082 PrintTypeCastError\n",
+      "usability_score": null
+    },
+    {
+      "test_name": "test_mean",
+      "suite_name": "operator_smoke",
+      "layer": "operator",
+      "compatibility": true,
+      "correctness": true,
+      "performance_ms": 0.0,
+      "error_message": null,
+      "usability_score": null
+    },
+    {
+      "test_name": "test_mul",
+      "suite_name": "operator_smoke",
+      "layer": "operator",
+      "compatibility": true,
+      "correctness": true,
+      "performance_ms": 0.0,
+      "error_message": null,
+      "usability_score": null
+    },
+    {
+      "test_name": "test_relu",
+      "suite_name": "operator_smoke",
+      "layer": "operator",
+      "compatibility": true,
+      "correctness": true,
+      "performance_ms": 0.0,
+      "error_message": null,
+      "usability_score": null
+    },
+    {
+      "test_name": "test_reshape",
+      "suite_name": "operator_smoke",
+      "layer": "operator",
+      "compatibility": true,
+      "correctness": true,
+      "performance_ms": 0.0,
+      "error_message": null,
+      "usability_score": null
+    },
+    {
+      "test_name": "test_sigmoid",
+      "suite_name": "operator_smoke",
+      "layer": "operator",
+      "compatibility": false,
+      "correctness": false,
+      "performance_ms": null,
+      "error_message": "Failed calling Abs with \"Abs()(input=float)\".\nThe valid calling should be: \n\"Abs()(input=<Tensor>)\".\n\n----------------------------------------------------\n- C++ Call Stack: (For framework developers)\n----------------------------------------------------\nmindspore/ccsrc/pynative/pynative_utils.cc:1082 PrintTypeCastError\n",
+      "usability_score": null
+    },
+    {
+      "test_name": "test_softmax",
+      "suite_name": "operator_smoke",
+      "layer": "operator",
+      "compatibility": true,
+      "correctness": true,
+      "performance_ms": 0.0,
+      "error_message": null,
+      "usability_score": null
+    },
+    {
+      "test_name": "test_squeeze",
+      "suite_name": "operator_smoke",
+      "layer": "operator",
+      "compatibility": true,
+      "correctness": true,
+      "performance_ms": 0.0,
+      "error_message": null,
+      "usability_score": null
+    },
+    {
+      "test_name": "test_stack",
+      "suite_name": "operator_smoke",
+      "layer": "operator",
+      "compatibility": true,
+      "correctness": true,
+      "performance_ms": 0.0,
+      "error_message": null,
+      "usability_score": null
+    },
+    {
+      "test_name": "test_sub",
+      "suite_name": "operator_smoke",
+      "layer": "operator",
+      "compatibility": true,
+      "correctness": true,
+      "performance_ms": 0.0,
+      "error_message": null,
+      "usability_score": null
+    },
+    {
+      "test_name": "test_sum",
+      "suite_name": "operator_smoke",
+      "layer": "operator",
+      "compatibility": true,
+      "correctness": true,
+      "performance_ms": 0.0,
+      "error_message": null,
+      "usability_score": null
+    },
+    {
+      "test_name": "test_tanh",
+      "suite_name": "operator_smoke",
+      "layer": "operator",
+      "compatibility": false,
+      "correctness": false,
+      "performance_ms": null,
+      "error_message": "Failed calling Abs with \"Abs()(input=float)\".\nThe valid calling should be: \n\"Abs()(input=<Tensor>)\".\n\n----------------------------------------------------\n- C++ Call Stack: (For framework developers)\n----------------------------------------------------\nmindspore/ccsrc/pynative/pynative_utils.cc:1082 PrintTypeCastError\n",
+      "usability_score": null
+    },
+    {
+      "test_name": "test_transpose",
+      "suite_name": "operator_smoke",
+      "layer": "operator",
+      "compatibility": true,
+      "correctness": true,
+      "performance_ms": 0.0,
+      "error_message": null,
+      "usability_score": null
+    },
+    {
+      "test_name": "test_unsqueeze",
+      "suite_name": "operator_smoke",
+      "layer": "operator",
+      "compatibility": true,
+      "correctness": true,
+      "performance_ms": 0.0,
+      "error_message": null,
+      "usability_score": null
+    }
+  ]
+}
