@@ -1,11 +1,51 @@
 {
   "backend": "torch4ms",
-  "timestamp": "2026-04-23T12:49:42.882291",
+  "timestamp": "2026-04-23T19:07:42.186436",
   "environment": {
     "python": "3.10.19",
     "os": "Linux"
   },
   "results": [
+    {
+      "test_name": "test_conv2d_backward",
+      "suite_name": "autograd_smoke",
+      "layer": "autograd",
+      "compatibility": false,
+      "correctness": false,
+      "performance_ms": 0.0,
+      "error_message": null,
+      "usability_score": null
+    },
+    {
+      "test_name": "test_linear_backward",
+      "suite_name": "autograd_smoke",
+      "layer": "autograd",
+      "compatibility": false,
+      "correctness": false,
+      "performance_ms": 0.0,
+      "error_message": null,
+      "usability_score": null
+    },
+    {
+      "test_name": "test_operator_backward",
+      "suite_name": "autograd_smoke",
+      "layer": "autograd",
+      "compatibility": false,
+      "correctness": false,
+      "performance_ms": null,
+      "error_message": "Operator with name add has no lowering and cannot fallback to PyTorch native implementation",
+      "usability_score": null
+    },
+    {
+      "test_name": "test_mnist_training_smoke",
+      "suite_name": "end2end_training",
+      "layer": "end2end",
+      "compatibility": false,
+      "correctness": false,
+      "performance_ms": null,
+      "error_message": "Operator with name avg_pool2d has no lowering and cannot fallback to PyTorch native implementation",
+      "usability_score": null
+    },
     {
       "test_name": "test_tiny_lstm",
       "suite_name": "model_smoke",
@@ -13,7 +53,7 @@
       "compatibility": false,
       "correctness": false,
       "performance_ms": null,
-      "error_message": "Can't call numpy() on Tensor that requires grad. Use tensor.detach().numpy() instead.",
+      "error_message": "Operator with name lstm has no lowering and cannot fallback to PyTorch native implementation",
       "usability_score": null
     },
     {
@@ -33,7 +73,7 @@
       "compatibility": false,
       "correctness": false,
       "performance_ms": null,
-      "error_message": "module 'mindspore.ops' has no attribute 'MaxPool2D'",
+      "error_message": "For Primitive[MaxPoolWithArgmaxV2], the type of input argument[input] must be Tensor but got External.\n\n----------------------------------------------------\n- C++ Call Stack: (For framework developers)\n----------------------------------------------------\nmindspore/core/utils/check_convert_utils.cc:871 CheckTensorTypeValid\n",
       "usability_score": null
     },
     {
@@ -113,7 +153,17 @@
       "compatibility": false,
       "correctness": false,
       "performance_ms": null,
-      "error_message": "module 'mindspore.ops' has no attribute 'MaxPool2D'",
+      "error_message": "For Primitive[MaxPoolWithArgmaxV2], the type of input argument[input] must be Tensor but got External.\n\n----------------------------------------------------\n- C++ Call Stack: (For framework developers)\n----------------------------------------------------\nmindspore/core/utils/check_convert_utils.cc:871 CheckTensorTypeValid\n",
+      "usability_score": null
+    },
+    {
+      "test_name": "test_mhc_hyper_connection",
+      "suite_name": "novel_algorithm_smoke",
+      "layer": "novel_algorithm",
+      "compatibility": false,
+      "correctness": false,
+      "performance_ms": null,
+      "error_message": "Operator with name requires_grad_ has no lowering and cannot fallback to PyTorch native implementation",
       "usability_score": null
     },
     {
@@ -163,7 +213,7 @@
       "compatibility": false,
       "correctness": false,
       "performance_ms": null,
-      "error_message": "Failed calling Abs with \"Abs()(input=float)\".\nThe valid calling should be: \n\"Abs()(input=<Tensor>)\".\n\n----------------------------------------------------\n- C++ Call Stack: (For framework developers)\n----------------------------------------------------\nmindspore/ccsrc/pynative/pynative_utils.cc:1082 PrintTypeCastError\n",
+      "error_message": "Failed calling Abs with \"Abs()(input=float)\".\nThe valid calling should be: \n\"Abs()(input=<Tensor>)\".\n\n----------------------------------------------------\n- C++ Call Stack: (For framework developers)\n----------------------------------------------------\nmindspore/ccsrc/pipeline/pynative/pynative_utils.cc:1368 PrintTypeCastError\n",
       "usability_score": null
     },
     {
@@ -213,7 +263,7 @@
       "compatibility": false,
       "correctness": false,
       "performance_ms": null,
-      "error_message": "Failed calling Abs with \"Abs()(input=float)\".\nThe valid calling should be: \n\"Abs()(input=<Tensor>)\".\n\n----------------------------------------------------\n- C++ Call Stack: (For framework developers)\n----------------------------------------------------\nmindspore/ccsrc/pynative/pynative_utils.cc:1082 PrintTypeCastError\n",
+      "error_message": "Failed calling Abs with \"Abs()(input=float)\".\nThe valid calling should be: \n\"Abs()(input=<Tensor>)\".\n\n----------------------------------------------------\n- C++ Call Stack: (For framework developers)\n----------------------------------------------------\nmindspore/ccsrc/pipeline/pynative/pynative_utils.cc:1368 PrintTypeCastError\n",
       "usability_score": null
     },
     {
@@ -273,7 +323,7 @@
       "compatibility": false,
       "correctness": false,
       "performance_ms": null,
-      "error_message": "Failed calling Abs with \"Abs()(input=float)\".\nThe valid calling should be: \n\"Abs()(input=<Tensor>)\".\n\n----------------------------------------------------\n- C++ Call Stack: (For framework developers)\n----------------------------------------------------\nmindspore/ccsrc/pynative/pynative_utils.cc:1082 PrintTypeCastError\n",
+      "error_message": "Failed calling Abs with \"Abs()(input=float)\".\nThe valid calling should be: \n\"Abs()(input=<Tensor>)\".\n\n----------------------------------------------------\n- C++ Call Stack: (For framework developers)\n----------------------------------------------------\nmindspore/ccsrc/pipeline/pynative/pynative_utils.cc:1368 PrintTypeCastError\n",
       "usability_score": null
     },
     {

@@ -29,14 +29,23 @@ def run_tests_in_suite(adapter, suite_module):
                 # Mock result for smoke test execution
                 # A real implementation would capture execution time, output, and correctness
                 success = bool(obj(adapter))
+                
+                # Check if adapter recorded specific performance metrics during the run
+                perf_ms = getattr(adapter, "last_performance_ms", 0.0)
+                
                 results.append(TestCaseResult(
                     test_name=name,
                     suite_name=suite_name,
                     layer=layer,
                     compatibility=success,
                     correctness=success,
-                    performance_ms=0.0
+                    performance_ms=perf_ms
                 ))
+                
+                # Clear metric for next test
+                if hasattr(adapter, "last_performance_ms"):
+                    delattr(adapter, "last_performance_ms")
+                    
             except Exception as e:
                 results.append(TestCaseResult(
                     test_name=name,

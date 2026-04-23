@@ -38,21 +38,28 @@ def generate_markdown_report():
     
     backends = sorted([d['backend'] for d in data_all])
     
-    # Table Header
-    md_content += "| Suite | Test Name | " + " | ".join([f"`{b}`" for b in backends]) + " |\n"
+    # Table Header (Adding Performance Metric support)
+    md_content += "| Suite | Test Name | " + " | ".join([f"`{b}` (Status / Time)" for b in backends]) + " |\n"
     md_content += "|---|---|" + "|".join(["---" for _ in backends]) + "|\n"
     
     for suite, test in all_tests:
         row = f"| {suite} | {test} |"
         for b in backends:
-            # find result
-            b_data = next(d for d in data_all if d['backend'] == b)
+            b_data = next((d for d in data_all if d['backend'] == b), None)
+            if not b_data:
+                row += " N/A |"
+                continue
+                
             res = next((r for r in b_data['results'] if r['test_name'] == test and r['suite_name'] == suite), None)
             
             if res is None:
                 row += " N/A |"
             elif res['compatibility']:
-                row += " ✅ |"
+                perf = res.get('performance_ms', 0.0)
+                if perf and perf > 0:
+                    row += f" ✅ ({perf:.1f}ms) |"
+                else:
+                    row += " ✅ |"
             else:
                 row += " ❌ |"
         md_content += row + "\n"

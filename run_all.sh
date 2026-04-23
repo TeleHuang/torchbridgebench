@@ -1,9 +1,14 @@
 #!/bin/bash
 
+# Define paths to virtual environments
 export VENV_DIR="/root/autodl-tmp/mindnlp/.venv-torch4ms"
 export CLEAN_VENV_DIR="/root/autodl-tmp/mindnlp/.venv-torch4ms-clean"
+export LEGACY_VENV_DIR="/root/autodl-tmp/mindnlp/.venv-torch4ms-legacy"
 
 cd /root/autodl-tmp/torchbridgebench
+
+# Run preflight checks
+$CLEAN_VENV_DIR/bin/python preflight.py
 
 echo "==============================="
 echo "Running torch-npu benchmark..."

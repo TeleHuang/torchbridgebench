@@ -1,11 +1,51 @@
 {
   "backend": "mindnlp_patch",
-  "timestamp": "2026-04-23T12:50:09.260991",
+  "timestamp": "2026-04-23T19:08:08.404175",
   "environment": {
     "python": "3.10.19",
     "os": "Linux"
   },
   "results": [
+    {
+      "test_name": "test_conv2d_backward",
+      "suite_name": "autograd_smoke",
+      "layer": "autograd",
+      "compatibility": true,
+      "correctness": true,
+      "performance_ms": 0.0,
+      "error_message": null,
+      "usability_score": null
+    },
+    {
+      "test_name": "test_linear_backward",
+      "suite_name": "autograd_smoke",
+      "layer": "autograd",
+      "compatibility": true,
+      "correctness": true,
+      "performance_ms": 0.0,
+      "error_message": null,
+      "usability_score": null
+    },
+    {
+      "test_name": "test_operator_backward",
+      "suite_name": "autograd_smoke",
+      "layer": "autograd",
+      "compatibility": true,
+      "correctness": true,
+      "performance_ms": 0.0,
+      "error_message": null,
+      "usability_score": null
+    },
+    {
+      "test_name": "test_mnist_training_smoke",
+      "suite_name": "end2end_training",
+      "layer": "end2end",
+      "compatibility": true,
+      "correctness": true,
+      "performance_ms": 4089.995861053467,
+      "error_message": null,
+      "usability_score": null
+    },
     {
       "test_name": "test_tiny_lstm",
       "suite_name": "model_smoke",
@@ -113,6 +153,16 @@
       "compatibility": true,
       "correctness": true,
       "performance_ms": 0.0,
+      "error_message": null,
+      "usability_score": null
+    },
+    {
+      "test_name": "test_mhc_hyper_connection",
+      "suite_name": "novel_algorithm_smoke",
+      "layer": "novel_algorithm",
+      "compatibility": true,
+      "correctness": true,
+      "performance_ms": 12.584924697875977,
       "error_message": null,
       "usability_score": null
     },
