@@ -9,15 +9,21 @@ def generate_markdown_report():
         print("No JSON reports found.")
         return
 
-    data_all = []
-    all_tests = set()
-    
+    # Keep only the newest report per backend to avoid duplicate backend columns.
+    reports = sorted(reports, key=os.path.getmtime, reverse=True)
+    data_by_backend = {}
     for report_file in reports:
         with open(report_file, 'r') as f:
             data = json.load(f)
-            data_all.append(data)
-            for res in data['results']:
-                all_tests.add((res['suite_name'], res['test_name']))
+        backend = data.get("backend")
+        if backend and backend not in data_by_backend:
+            data_by_backend[backend] = data
+
+    data_all = list(data_by_backend.values())
+    all_tests = set()
+    for data in data_all:
+        for res in data['results']:
+            all_tests.add((res['suite_name'], res['test_name']))
 
     all_tests = sorted(list(all_tests))
     
