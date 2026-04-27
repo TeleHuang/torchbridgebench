@@ -150,8 +150,6 @@ def test_experiment_mobilenet_torch4ms(adapter):
         "--val-steps",
         "1",
         "--use-fake-data",
-        "--device-target",
-        "CPU",
         "--output",
         "artifacts/benchmark_mobilenet_experiment_report.json",
         required_markers=("[torch4ms][summary]",),
