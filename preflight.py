@@ -1,16 +1,21 @@
 import sys
 import subprocess
 import platform
+import importlib
 
 def check_python_version():
+    print(f"Python Executable: {sys.executable}")
     print(f"Python Version: {platform.python_version()}")
 
-def check_mindspore():
+def check_module(name):
     try:
-        import mindspore as ms
-        print(f"MindSpore Version: {ms.__version__}")
-    except ImportError:
-        print("MindSpore is not installed.")
+        module = importlib.import_module(name)
+        print(f"{name}: {getattr(module, '__version__', 'present')}")
+    except Exception as exc:
+        print(f"{name}: unavailable ({exc})")
+
+def check_mindspore():
+    check_module("mindspore")
 
 def check_torch_npu():
     try:
@@ -45,6 +50,11 @@ def run_preflight():
     check_npu_smi()
     check_mindspore()
     check_torch_npu()
+    check_module("torch4ms")
+    check_module("mindtorch_v2")
+    check_module("mindnlp")
+    check_module("torchvision")
+    check_module("ultralytics")
     print("===================================")
 
 if __name__ == "__main__":

@@ -5,6 +5,7 @@ import platform
 import importlib
 import pkgutil
 import inspect
+import sys
 
 from adapters import get_adapter
 from schema import BenchmarkReport, TestCaseResult
@@ -26,20 +27,36 @@ def run_tests_in_suite(adapter, suite_module):
         if inspect.isfunction(obj) and name.startswith("test_"):
             print(f"Running {name} in {suite_name}...")
             try:
-                # Mock result for smoke test execution
-                # A real implementation would capture execution time, output, and correctness
-                success = bool(obj(adapter))
-                
-                # Check if adapter recorded specific performance metrics during the run
-                perf_ms = getattr(adapter, "last_performance_ms", 0.0)
+                raw_result = obj(adapter)
+                if raw_result is None:
+                    continue
+
+                if isinstance(raw_result, dict):
+                    skipped = bool(raw_result.get("skipped", False))
+                    compatibility = bool(raw_result.get("compatibility", True if skipped else False))
+                    correctness = raw_result.get("correctness", None if skipped else compatibility)
+                    performance_ms = raw_result.get("performance_ms", getattr(adapter, "last_performance_ms", 0.0))
+                    error_message = raw_result.get("error_message")
+                    usability_score = raw_result.get("usability_score")
+                else:
+                    skipped = False
+                    success = bool(raw_result)
+                    compatibility = success
+                    correctness = success
+                    performance_ms = getattr(adapter, "last_performance_ms", 0.0)
+                    error_message = None
+                    usability_score = None
                 
                 results.append(TestCaseResult(
                     test_name=name,
                     suite_name=suite_name,
                     layer=layer,
-                    compatibility=success,
-                    correctness=success,
-                    performance_ms=perf_ms
+                    compatibility=compatibility,
+                    correctness=correctness,
+                    performance_ms=performance_ms,
+                    error_message=error_message,
+                    usability_score=usability_score,
+                    skipped=skipped,
                 ))
                 
                 # Clear metric for next test
@@ -105,9 +122,16 @@ def main():
 
     # Collect Environment Info
     env_info = {
+        "python_executable": sys.executable,
         "python": platform.python_version(),
         "os": platform.system()
     }
+    for module_name in ("torch", "torch_npu", "mindspore", "torch4ms", "mindtorch_v2", "mindnlp", "torchvision", "ultralytics"):
+        try:
+            module = importlib.import_module(module_name)
+            env_info[module_name] = getattr(module, "__version__", "present")
+        except Exception as exc:
+            env_info[module_name] = f"unavailable: {exc}"
 
     report = BenchmarkReport(
         backend=args.backend,

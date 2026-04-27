@@ -12,6 +12,7 @@ class TestCaseResult:
     performance_ms: Optional[float] = None
     error_message: Optional[str] = None
     usability_score: Optional[int] = None
+    skipped: bool = False
 
 @dataclass
 class BenchmarkReport:
