@@ -1,4 +1,17 @@
-report.json
 __pycache__/
 *.pyc
 benchmark_report.md
+
+# Generated benchmark outputs
+artifacts/
+report.json
+report_*.json
+report*.json
+*_regression.json
+
+# Ascend / CANN runtime outputs
+aclinit.json
+ge_check_op.json
+fusion_result.json
+kernel_meta/
+offload/

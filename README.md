@@ -27,7 +27,7 @@ Unified Benchmark System for PyTorch to MindSpore/Ascend compatibility layers.
 ### Run Benchmark
 
 ```bash
-/root/autodl-tmp/mindnlp/.venv-torch4ms/bin/python cli.py --backend <backend_name> --output <output.json>
+/root/autodl-tmp/mindnlp/.venv-torch4ms/bin/python cli.py --backend <backend_name> --output artifacts/reports/<output.json>
 ```
 
 Available backends: `torch`, `torch-npu`, `torch4ms`, `mindtorch`, `mindnlp_patch`.
@@ -117,6 +117,11 @@ $PY -c "import sys, importlib.util as u; print(sys.executable); print('torch4ms'
   - Action: stop and record the failure signature, root cause, and rerun steps before continuing.
 
 ### Post-Run Discipline
+
+Benchmark output files must stay out of the repository root. Write JSON and
+Markdown reports under `artifacts/reports/`; write backend runtime dumps under
+`artifacts/` or another ignored runtime directory. Only curated example reports
+intended for documentation should be copied into a tracked docs/example path.
 
 For critical failures, always document:
 

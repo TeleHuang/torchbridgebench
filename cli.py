@@ -79,7 +79,7 @@ def main():
     parser.add_argument("--backend", type=str, required=True, 
                         choices=["torch", "torch-npu", "torch4ms", "mindtorch", "mindnlp_patch"],
                         help="Target backend to benchmark")
-    parser.add_argument("--output", type=str, default="report.json",
+    parser.add_argument("--output", type=str, default="artifacts/reports/report.json",
                         help="Output JSON report file path")
     args = parser.parse_args()
 

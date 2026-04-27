@@ -59,7 +59,7 @@ def _format_status(res):
     return "PASS"
 
 
-def generate_markdown_report(output_path="benchmark_report.md", input_glob="report_*.json", latest_per_backend=True):
+def generate_markdown_report(output_path="artifacts/reports/benchmark_report.md", input_glob="artifacts/reports/report_*.json", latest_per_backend=True):
     data_all, scanned_reports = _load_reports(input_glob, latest_per_backend=latest_per_backend)
     if not data_all:
         print(f"No JSON reports found by pattern: {input_glob}")
@@ -193,6 +193,9 @@ def generate_markdown_report(output_path="benchmark_report.md", input_glob="repo
         md.append("All tests passed for all selected backends.")
         md.append("")
 
+    parent = os.path.dirname(os.path.abspath(output_path))
+    if parent:
+        os.makedirs(parent, exist_ok=True)
     with open(output_path, "w", encoding="utf-8") as f:
         f.write("\n".join(md) + "\n")
     print(f"Markdown report generated: {os.path.abspath(output_path)}")
@@ -200,8 +203,8 @@ def generate_markdown_report(output_path="benchmark_report.md", input_glob="repo
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Generate markdown report from benchmark JSON files.")
-    parser.add_argument("--output", default="benchmark_report.md", help="Output markdown file path.")
-    parser.add_argument("--input-glob", default="report_*.json", help="Input JSON glob pattern.")
+    parser.add_argument("--output", default="artifacts/reports/benchmark_report.md", help="Output markdown file path.")
+    parser.add_argument("--input-glob", default="artifacts/reports/report_*.json", help="Input JSON glob pattern.")
     parser.add_argument(
         "--all-runs",
         action="store_true",

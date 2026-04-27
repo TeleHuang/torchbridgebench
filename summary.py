@@ -1,7 +1,7 @@
 import json
 import glob
 
-reports = glob.glob("report_*.json")
+reports = glob.glob("artifacts/reports/report_*.json")
 for report in reports:
     with open(report, "r") as f:
         data = json.load(f)
