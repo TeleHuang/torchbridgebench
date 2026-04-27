@@ -84,6 +84,7 @@ def main():
     args = parser.parse_args()
 
     print(f"Starting Benchmark for backend: {args.backend}")
+    suites = load_suites()
     adapter = get_adapter(args.backend)
     
     setup_failed = False
@@ -96,7 +97,6 @@ def main():
         print(f"Adapter setup failed: {e}")
 
     all_results = []
-    suites = load_suites()
     
     if setup_failed:
         for suite in suites:
