@@ -8,8 +8,10 @@ class Torch4MSAdapter(BaseAdapter):
     def setup(self):
         import os
         import sys
-        # Prefer the freshly cloned torch4ms repository for benchmark runs.
-        repo_root = "/root/autodl-tmp/ascend-torch4ms"
+        repo_root = os.environ.get(
+            "TORCH4MS_REPO_ROOT",
+            "/root/autodl-tmp/ascend-torch4ms-ms272-stable",
+        )
         if os.path.isdir(repo_root) and repo_root not in sys.path:
             sys.path.insert(0, repo_root)
         # If torch4ms was imported from another location, reload from the repo root.
