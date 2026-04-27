@@ -120,6 +120,7 @@ def test_repo_train_resnet_compare_script(adapter):
         "CPU",
         "--batch-size",
         "8",
+        "--pynative",
         forbidden_markers=("BAD_INVALID", "MISMATCH_ZERO"),
     )
 
