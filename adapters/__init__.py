@@ -1,18 +1,17 @@
-from .torch_adapter import TorchAdapter
-from .torch_npu_adapter import TorchNPUAdapter
-from .torch4ms_adapter import Torch4MSAdapter
-from .mindtorch_adapter import MindTorchAdapter
-from .mindnlp_patch_adapter import MindNLPPatchAdapter
+import importlib
 
 ADAPTERS = {
-    "torch": TorchAdapter,
-    "torch-npu": TorchNPUAdapter,
-    "torch4ms": Torch4MSAdapter,
-    "mindtorch": MindTorchAdapter,
-    "mindnlp_patch": MindNLPPatchAdapter,
+    "torch": ("adapters.torch_adapter", "TorchAdapter"),
+    "torch-npu": ("adapters.torch_npu_adapter", "TorchNPUAdapter"),
+    "torch4ms": ("adapters.torch4ms_adapter", "Torch4MSAdapter"),
+    "mindtorch": ("adapters.mindtorch_adapter", "MindTorchAdapter"),
+    "mindnlp_patch": ("adapters.mindnlp_patch_adapter", "MindNLPPatchAdapter"),
 }
 
 def get_adapter(name: str):
     if name not in ADAPTERS:
         raise ValueError(f"Adapter {name} not found. Available adapters: {list(ADAPTERS.keys())}")
-    return ADAPTERS[name]()
+    module_name, class_name = ADAPTERS[name]
+    module = importlib.import_module(module_name)
+    adapter_cls = getattr(module, class_name)
+    return adapter_cls()

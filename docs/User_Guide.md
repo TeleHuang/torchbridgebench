@@ -65,7 +65,36 @@ python cli.py --backend torch4ms --output report_torch4ms.json
 
 *支持的 backend 参数：`torch-npu`, `torch4ms`, `mindtorch`, `mindnlp_patch`, `torch` (基线).*
 
-### 3.3 触发 Agent 自动诊断
+### 3.3 定向运行 suite / test / layer
+
+CLI 支持按 suite、test、layer 缩小执行范围，便于复现失败和验证修复，不需要再手写 Python 片段。
+
+```bash
+# 单跑一个 suite
+python cli.py --backend torch4ms \
+  --suite module_smoke \
+  --output artifacts/reports/module_smoke.json
+
+# 单跑一个测试，suite 和 test 分开写
+python cli.py --backend torch4ms \
+  --suite module_smoke \
+  --test test_batchnorm2d_module \
+  --output artifacts/reports/batchnorm.json
+
+# 单跑一个测试，使用 suite/test 形式
+python cli.py --backend torch4ms \
+  --test module_smoke/test_avgpool2d_module \
+  --output artifacts/reports/avgpool.json
+
+# 单跑一个 layer
+python cli.py --backend torch4ms \
+  --layer end2end \
+  --output artifacts/reports/end2end.json
+```
+
+`--suite`、`--test`、`--layer` 均可重复传入，也可使用逗号分隔列表。
+
+### 3.4 触发 Agent 自动诊断
 
 当发现某个测试用例失败时，可以调用 Agent 进行自动化溯源与环境突变测试（例如验证是否为版本不兼容导致）。
 

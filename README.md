@@ -32,6 +32,24 @@ python cli.py --backend <backend_name> --output artifacts/reports/<output.json>
 
 Available backends: `torch`, `torch-npu`, `torch4ms`, `mindtorch`, `mindnlp_patch`.
 
+Filter flags can be combined for targeted runs:
+
+```bash
+# Run one suite.
+python cli.py --backend torch4ms --suite module_smoke --output artifacts/reports/module_smoke.json
+
+# Run one test by simple name.
+python cli.py --backend torch4ms --suite module_smoke --test test_batchnorm2d_module --output artifacts/reports/batchnorm.json
+
+# Run one test by qualified suite/test selector.
+python cli.py --backend torch4ms --test module_smoke/test_avgpool2d_module --output artifacts/reports/avgpool.json
+
+# Run one layer.
+python cli.py --backend torch4ms --layer end2end --output artifacts/reports/end2end.json
+```
+
+`--suite`, `--test`, and `--layer` can be repeated or passed as comma-separated lists.
+
 ## Critical Runbook
 
 ### Current Torch4MS Baseline
@@ -96,8 +114,14 @@ python report_generator.py \
   --output artifacts/reports/benchmark_report_torch4ms_ms280_cann85_npu.md
 ```
 
-Current `cli.py` runs the full suite for the selected backend. Per-suite and
-per-test filtering is planned but is not the stable CLI contract yet.
+For a targeted NPU rerun:
+
+```bash
+TORCH4MS_REPO_ROOT=/root/autodl-tmp/ascend-torch4ms-ms272-stable \
+TORCH4MS_DEVICE_TARGET=Ascend \
+TORCH4MS_USE_MS_GRAPH_MODE=0 \
+  python cli.py --backend torch4ms --test module_smoke/test_batchnorm2d_module --output artifacts/reports/batchnorm_npu.json
+```
 
 ### Repo Regression Suite
 
