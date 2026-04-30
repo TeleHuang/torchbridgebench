@@ -21,56 +21,83 @@ Unified Benchmark System for PyTorch to MindSpore/Ascend compatibility layers.
 ### Preflight Check
 
 ```bash
-/root/autodl-tmp/mindnlp/.venv-torch4ms/bin/python preflight.py
+python preflight.py
 ```
 
 ### Run Benchmark
 
 ```bash
-/root/autodl-tmp/mindnlp/.venv-torch4ms/bin/python cli.py --backend <backend_name> --output artifacts/reports/<output.json>
+python cli.py --backend <backend_name> --output artifacts/reports/<output.json>
 ```
 
 Available backends: `torch`, `torch-npu`, `torch4ms`, `mindtorch`, `mindnlp_patch`.
 
 ## Critical Runbook
 
-### Approved Python Environments
+### Current Torch4MS Baseline
 
-- `/root/autodl-tmp/mindnlp/.venv-torch4ms`
-- `/root/autodl-tmp/mindnlp/.venv-torch4ms-clean`
-- `/root/autodl-tmp/mindnlp/.venv-torch4ms-legacy`
+The current active `torch4ms` source tree is:
+
+```bash
+/root/autodl-tmp/ascend-torch4ms-ms272-stable
+```
+
+Do not use `/root/autodl-tmp/ascend-torch4ms` for current benchmark conclusions.
+
+Latest verified `torch4ms` results:
+
+- MS2.8.0 + CANN8.5 NPU: `41 / 41` passed, `0` skipped.
+- Report JSON: `artifacts/reports/report_torch4ms_ms280_cann85_npu_20260430_135800.json`
+- Report Markdown: `artifacts/reports/benchmark_report_torch4ms_ms280_cann85_npu_20260430_135800.md`
+
+### Approved Torch4MS Environments
+
+MS2.8.0 clean CPU benchmark:
+
+```bash
+source /root/autodl-tmp/activate_torch4ms_ms280_clean.sh
+```
+
+MS2.8.0 + CANN8.5 Ascend NPU benchmark:
+
+```bash
+source /root/autodl-tmp/activate_torch4ms_ms280_cann85.sh
+export TORCH4MS_REPO_ROOT=/root/autodl-tmp/ascend-torch4ms-ms272-stable
+export TORCH4MS_DEVICE_TARGET=Ascend
+export TORCH4MS_USE_MS_GRAPH_MODE=0
+```
+
+MS2.7.2 CPU baseline for strict backward and small training scripts:
+
+```bash
+source /root/autodl-tmp/activate_torch4ms_ms272_stable.sh
+```
 
 Do not use system Python for benchmark runs.
 
-### Backend → Environment Matrix
+### Torch4MS NPU Full Run
 
-- `torch`, `torch-npu`, `mindnlp_patch` → `/root/autodl-tmp/mindnlp/.venv-torch4ms`
-- `torch4ms` → `/root/autodl-tmp/mindnlp/.venv-torch4ms-legacy`
-- `mindtorch` → `/root/autodl-tmp/mindnlp/.venv-torch4ms-clean`
+Use this command for the current NPU acceptance run:
 
-Why this mapping matters:
+```bash
+source /root/autodl-tmp/activate_torch4ms_ms280_cann85.sh
+cd /root/autodl-tmp/torchbridgebench
+TORCH4MS_REPO_ROOT=/root/autodl-tmp/ascend-torch4ms-ms272-stable \
+TORCH4MS_DEVICE_TARGET=Ascend \
+TORCH4MS_USE_MS_GRAPH_MODE=0 \
+  python cli.py --backend torch4ms --output artifacts/reports/report_torch4ms_ms280_cann85_npu.json
+```
 
-- `.venv-torch4ms` contains `torch_npu`, so it is required for `torch-npu` runs.
-- The same venv must not be used for `torch4ms`, because `torch_npu` pre-registers the `privateuse1` backend as `npu`, which makes `torch4ms` import fail.
-- On this server, `.venv-torch4ms-clean` carries `mindspore==2.3.0`, while `.venv-torch4ms-legacy` carries `mindspore==2.6.0`; current `torch4ms` DEV backward validation passes in the legacy env and is not the recommended benchmark path in the clean env.
+Generate a Markdown report from a JSON output:
 
-### Experiment Dependency Notes
+```bash
+python report_generator.py \
+  --input-glob artifacts/reports/report_torch4ms_ms280_cann85_npu.json \
+  --output artifacts/reports/benchmark_report_torch4ms_ms280_cann85_npu.md
+```
 
-- `ascend-torch4ms/experiments/resnet_torchax_cifar/*` requires `torchvision`
-- `ascend-torch4ms/experiments/mobilenet_torchax_cifar/*` requires `torchvision`
-- `ascend-torch4ms/experiments/yolo_ultralytics_smoke/*` requires `ultralytics`
-
-Current observed server state:
-
-- `.venv-torch4ms-legacy` can import `torch4ms`, but does not provide `torchvision`
-- `.venv-torch4ms` provides `torchvision`, but importing `torch4ms` there collides with `torch_npu`
-- `ultralytics` is currently absent from the approved benchmark venvs
-
-The repo regression wrapper keeps dependency and runtime limitations explicit:
-
-- ResNet and MobileNet experiment smoke entries run the torch4ms path with a CPU MindSpore target, avoiding known Ascend BatchNorm / MaxPoolWithArgmaxV2 limits in manual CI.
-- YOLO is marked `SKIP` when `ultralytics` is absent, so missing optional dependencies do not count as torch4ms regressions.
-- `test_train_resnet_compare.py` remains a strict known-failing check for torch4ms gradient/update parity on larger torchvision models.
+Current `cli.py` runs the full suite for the selected backend. Per-suite and
+per-test filtering is planned but is not the stable CLI contract yet.
 
 ### Repo Regression Suite
 
@@ -87,31 +114,26 @@ Skipped repo-regression cases are excluded from pass-rate denominators and shown
 
 ### Mandatory Pre-Run Checks
 
-Run before each benchmark execution:
+Run before each `torch4ms` benchmark execution:
 
 ```bash
-PY=/root/autodl-tmp/mindnlp/.venv-torch4ms/bin/python
-$PY -c "import sys, importlib.util as u; print(sys.executable); print('mindspore', bool(u.find_spec('mindspore'))); print('torch_npu', bool(u.find_spec('torch_npu')))"
-```
-
-For `torch4ms`, use:
-
-```bash
-PY=/root/autodl-tmp/mindnlp/.venv-torch4ms-legacy/bin/python
-$PY -c "import sys, importlib.util as u; print(sys.executable); print('torch4ms', bool(u.find_spec('torch4ms'))); print('torch_npu', bool(u.find_spec('torch_npu')))"
+python -c "import sys, mindspore, torch, torchvision, torch4ms; print(sys.executable); print('mindspore', mindspore.__version__); print('torch', torch.__version__); print('torchvision', torchvision.__version__); print('torch4ms', torch4ms.__file__)"
 ```
 
 ### Known Failure Signatures and Root Causes
 
 - `No module named 'mindspore'`
   - Root cause: wrong interpreter selected.
-  - Action: switch to one of the approved venvs above and rerun.
+  - Action: source the correct activation script above and rerun.
 - `No module named 'torch_npu'`
-  - Root cause: `torch-npu` benchmark was launched from `.venv-torch4ms-clean` or `.venv-torch4ms-legacy`.
-  - Action: rerun `torch-npu` with `/root/autodl-tmp/mindnlp/.venv-torch4ms/bin/python`.
+  - Root cause: `torch-npu` benchmark was launched from an environment without `torch_npu`.
+  - Action: switch to the NPU PyTorch environment intended for `torch-npu` runs.
 - `torch.register_privateuse1_backend() has already been set! Current backend: npu`
   - Root cause: `torch4ms` run executed in an environment/session where `torch_npu` backend is already registered.
-  - Action: use `/root/autodl-tmp/mindnlp/.venv-torch4ms-legacy/bin/python` for `torch4ms` and avoid mixing `torch-npu` setup in the same runtime context.
+  - Action: use a clean process and do not mix `torch-npu` setup with `torch4ms` setup in the same runtime.
+- `Launch kernel failed, name:Default/AvgPool3D-op0`
+  - Root cause: Ascend `AvgPool2D` lowering through `AvgPool3D/AvgPool3DD` with unsupported float32 input.
+  - Action: verify the `torch4ms` source includes the Ascend `avg_pool2d` float32-to-float16 fallback.
 - Sudden score collapse (for example backend drops to `0 / N`)
   - Root cause: environment/config regression rather than model/operator logic.
   - Action: stop and record the failure signature, root cause, and rerun steps before continuing.
