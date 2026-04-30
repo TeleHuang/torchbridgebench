@@ -1,4 +1,5 @@
 import json
+import os
 from dataclasses import dataclass, asdict
 from typing import Dict, Any, Optional
 
@@ -12,6 +13,7 @@ class TestCaseResult:
     performance_ms: Optional[float] = None
     error_message: Optional[str] = None
     usability_score: Optional[int] = None
+    skipped: bool = False
 
 @dataclass
 class BenchmarkReport:
@@ -24,5 +26,8 @@ class BenchmarkReport:
         return json.dumps(asdict(self), indent=2)
 
     def save(self, filepath: str):
+        parent = os.path.dirname(os.path.abspath(filepath))
+        if parent:
+            os.makedirs(parent, exist_ok=True)
         with open(filepath, 'w', encoding='utf-8') as f:
             f.write(self.to_json())
